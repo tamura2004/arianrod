@@ -1,8 +1,7 @@
 rails new arianrod -B
 rails g model LevelUp charactor:references level:integer
-rails g model AbilityUp level_up:references ability:references
+rails g model BaseAbilityUp level_up:references ability:references number:integer
 rails g model SkillUp level_up:references skill:references
-rails g model Charactor
 rails g model Ability label:string name:string order:integer
 rails g model Skill name:string timing:references roll_type:references target:references range:references cost:integer sl_limit:integer effect:text critical:references is_magic:boolean klass:references race:references
 rails g model Timing label:string name:string order:integer
@@ -11,10 +10,18 @@ rails g model Target label:string name:string order:integer
 rails g model Range label:string name:string order:integer
 rails g model Critical label:string name:string order:integer
 
-rails g model Caractor race:references klass:references
+rails g model Charactor race:references
+rails g model MainKlass charactor:references klass:references
+railg g model SupportKlass charactor:references klass:references
 rails g model Race label:string name:string order:integer
-rails g model Klass label:string name:string order:integer
-rails g model Making charactor:references
+rails g model Klass label:string name:string order:integer is_main:boolean initial_hp:integer initial_mp:integer level_up_mp:integer level_up_mp:integer
+rails g model KlssAbility klass:references ability:references number:integer
+rails g model RaceAbility race:references ability:references number:integer
 
+rails g model SkillBonus skill:references bonus:references number:integer
+rails g model Bonus label:string name:string
 
-rake d1
+rails g model CharactorItem charactor:references item:references
+rails g model Item name:string category:references level:integer weight:integer equiped:references price:integer inspect_rate is_consumued:boolean timing:references comment:text
+rails g model ItemRequireKlass item:references klass:references
+rails g model ItemBonus item:references bonus:references number:integer

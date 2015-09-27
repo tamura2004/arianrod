@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  level_up_id: 
+  ability_id: 
+  number: 1
+
+two:
+  level_up_id: 
+  ability_id: 
+  number: 1

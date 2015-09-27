@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  klass_id: 
+  ability_id: 
+  number: 1
+
+two:
+  klass_id: 
+  ability_id: 
+  number: 1
