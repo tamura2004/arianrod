@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class SkillBonuTest < ActiveSupport::TestCase
+class BonusTest < ActiveSupport::TestCase
   # test "the truth" do
   #   assert true
   # end

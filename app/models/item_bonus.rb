@@ -1,4 +1,4 @@
-class ItemBonu < ActiveRecord::Base
+class ItemBonus < ActiveRecord::Base
   belongs_to :item
   belongs_to :bonus
 end
