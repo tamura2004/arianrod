@@ -1,0 +1,29 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  name: MyString
+  timing_id: 
+  roll_type_id: 
+  target_id: 
+  range_id: 
+  cost: 1
+  sl_limit: 1
+  effect: MyText
+  critical_id: 
+  is_magic: false
+  klass_id: 
+  race_id: 
+
+two:
+  name: MyString
+  timing_id: 
+  roll_type_id: 
+  target_id: 
+  range_id: 
+  cost: 1
+  sl_limit: 1
+  effect: MyText
+  critical_id: 
+  is_magic: false
+  klass_id: 
+  race_id: 
