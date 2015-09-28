@@ -11,12 +11,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150927084643) do
+ActiveRecord::Schema.define(version: 20150928150144) do
 
   create_table "abilities", force: :cascade do |t|
-    t.string   "label"
     t.string   "name"
-    t.integer  "order"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -32,8 +30,22 @@ ActiveRecord::Schema.define(version: 20150927084643) do
   add_index "base_ability_ups", ["ability_id"], name: "index_base_ability_ups_on_ability_id"
   add_index "base_ability_ups", ["level_up_id"], name: "index_base_ability_ups_on_level_up_id"
 
+  create_table "bonus_types", force: :cascade do |t|
+    t.string   "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "bonuses", force: :cascade do |t|
-    t.string   "label"
+    t.integer  "bonus_type_id"
+    t.integer  "number"
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
+  end
+
+  add_index "bonuses", ["bonus_type_id"], name: "index_bonuses_on_bonus_type_id"
+
+  create_table "categories", force: :cascade do |t|
     t.string   "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -50,28 +62,53 @@ ActiveRecord::Schema.define(version: 20150927084643) do
   add_index "charactor_items", ["item_id"], name: "index_charactor_items_on_item_id"
 
   create_table "charactors", force: :cascade do |t|
+    t.integer  "race_id"
+    t.string   "name"
+    t.integer  "age"
+    t.string   "sex"
+    t.integer  "player_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
+
+  add_index "charactors", ["player_id"], name: "index_charactors_on_player_id"
+  add_index "charactors", ["race_id"], name: "index_charactors_on_race_id"
 
   create_table "criticals", force: :cascade do |t|
-    t.string   "label"
     t.string   "name"
-    t.integer  "order"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
-  create_table "item_bonuses", force: :cascade do |t|
-    t.integer  "item_id"
+  create_table "distances", force: :cascade do |t|
+    t.string   "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "effects", force: :cascade do |t|
+    t.integer  "timing_id"
+    t.integer  "roll_type_id"
+    t.integer  "target_id"
+    t.integer  "distance_id"
+    t.integer  "limitation_id"
     t.integer  "bonus_id"
-    t.integer  "number"
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
+  end
+
+  add_index "effects", ["bonus_id"], name: "index_effects_on_bonus_id"
+  add_index "effects", ["distance_id"], name: "index_effects_on_distance_id"
+  add_index "effects", ["limitation_id"], name: "index_effects_on_limitation_id"
+  add_index "effects", ["roll_type_id"], name: "index_effects_on_roll_type_id"
+  add_index "effects", ["target_id"], name: "index_effects_on_target_id"
+  add_index "effects", ["timing_id"], name: "index_effects_on_timing_id"
+
+  create_table "equipeds", force: :cascade do |t|
+    t.string   "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
-
-  add_index "item_bonuses", ["bonus_id"], name: "index_item_bonuses_on_bonus_id"
-  add_index "item_bonuses", ["item_id"], name: "index_item_bonuses_on_item_id"
 
   create_table "item_require_klasses", force: :cascade do |t|
     t.integer  "item_id"
@@ -90,31 +127,19 @@ ActiveRecord::Schema.define(version: 20150927084643) do
     t.integer  "weight"
     t.integer  "equiped_id"
     t.integer  "price"
-    t.string   "inspect_rate"
+    t.integer  "inspect_rate"
     t.boolean  "is_consumued"
-    t.integer  "timing_id"
+    t.integer  "effect_id"
     t.text     "comment"
     t.datetime "created_at",   null: false
     t.datetime "updated_at",   null: false
   end
 
   add_index "items", ["category_id"], name: "index_items_on_category_id"
+  add_index "items", ["effect_id"], name: "index_items_on_effect_id"
   add_index "items", ["equiped_id"], name: "index_items_on_equiped_id"
-  add_index "items", ["timing_id"], name: "index_items_on_timing_id"
 
-  create_table "klasses", force: :cascade do |t|
-    t.string   "label"
-    t.string   "name"
-    t.integer  "order"
-    t.boolean  "is_main"
-    t.integer  "initial_hp"
-    t.integer  "initial_mp"
-    t.integer  "level_up_mp"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
-  end
-
-  create_table "klss_abilities", force: :cascade do |t|
+  create_table "klass_abilities", force: :cascade do |t|
     t.integer  "klass_id"
     t.integer  "ability_id"
     t.integer  "number"
@@ -122,8 +147,19 @@ ActiveRecord::Schema.define(version: 20150927084643) do
     t.datetime "updated_at", null: false
   end
 
-  add_index "klss_abilities", ["ability_id"], name: "index_klss_abilities_on_ability_id"
-  add_index "klss_abilities", ["klass_id"], name: "index_klss_abilities_on_klass_id"
+  add_index "klass_abilities", ["ability_id"], name: "index_klass_abilities_on_ability_id"
+  add_index "klass_abilities", ["klass_id"], name: "index_klass_abilities_on_klass_id"
+
+  create_table "klasses", force: :cascade do |t|
+    t.string   "name"
+    t.boolean  "is_main"
+    t.integer  "initial_hp"
+    t.integer  "initial_mp"
+    t.integer  "level_up_hp"
+    t.integer  "level_up_mp"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+  end
 
   create_table "level_ups", force: :cascade do |t|
     t.integer  "charactor_id"
@@ -134,6 +170,12 @@ ActiveRecord::Schema.define(version: 20150927084643) do
 
   add_index "level_ups", ["charactor_id"], name: "index_level_ups_on_charactor_id"
 
+  create_table "limitations", force: :cascade do |t|
+    t.string   "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "main_klasses", force: :cascade do |t|
     t.integer  "charactor_id"
     t.integer  "klass_id"
@@ -143,6 +185,12 @@ ActiveRecord::Schema.define(version: 20150927084643) do
 
   add_index "main_klasses", ["charactor_id"], name: "index_main_klasses_on_charactor_id"
   add_index "main_klasses", ["klass_id"], name: "index_main_klasses_on_klass_id"
+
+  create_table "players", force: :cascade do |t|
+    t.string   "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "race_abilities", force: :cascade do |t|
     t.integer  "race_id"
@@ -156,31 +204,16 @@ ActiveRecord::Schema.define(version: 20150927084643) do
   add_index "race_abilities", ["race_id"], name: "index_race_abilities_on_race_id"
 
   create_table "races", force: :cascade do |t|
-    t.string   "label"
     t.string   "name"
-    t.integer  "order"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
   create_table "roll_types", force: :cascade do |t|
-    t.string   "label"
     t.string   "name"
-    t.integer  "order"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
-
-  create_table "skill_bonuses", force: :cascade do |t|
-    t.integer  "skill_id"
-    t.integer  "bonus_id"
-    t.integer  "number"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
-  add_index "skill_bonuses", ["bonus_id"], name: "index_skill_bonuses_on_bonus_id"
-  add_index "skill_bonuses", ["skill_id"], name: "index_skill_bonuses_on_skill_id"
 
   create_table "skill_ups", force: :cascade do |t|
     t.integer  "level_up_id"
@@ -194,41 +227,40 @@ ActiveRecord::Schema.define(version: 20150927084643) do
 
   create_table "skills", force: :cascade do |t|
     t.string   "name"
-    t.integer  "timing_id"
-    t.integer  "roll_type_id"
-    t.integer  "target_id"
-    t.integer  "range_id"
     t.integer  "cost"
     t.integer  "sl_limit"
-    t.text     "effect"
+    t.integer  "effect_id"
     t.integer  "critical_id"
     t.boolean  "is_magic"
     t.integer  "klass_id"
     t.integer  "race_id"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+  end
+
+  add_index "skills", ["critical_id"], name: "index_skills_on_critical_id"
+  add_index "skills", ["effect_id"], name: "index_skills_on_effect_id"
+  add_index "skills", ["klass_id"], name: "index_skills_on_klass_id"
+  add_index "skills", ["race_id"], name: "index_skills_on_race_id"
+
+  create_table "support_klasses", force: :cascade do |t|
+    t.integer  "charactor_id"
+    t.integer  "klass_id"
     t.datetime "created_at",   null: false
     t.datetime "updated_at",   null: false
   end
 
-  add_index "skills", ["critical_id"], name: "index_skills_on_critical_id"
-  add_index "skills", ["klass_id"], name: "index_skills_on_klass_id"
-  add_index "skills", ["race_id"], name: "index_skills_on_race_id"
-  add_index "skills", ["range_id"], name: "index_skills_on_range_id"
-  add_index "skills", ["roll_type_id"], name: "index_skills_on_roll_type_id"
-  add_index "skills", ["target_id"], name: "index_skills_on_target_id"
-  add_index "skills", ["timing_id"], name: "index_skills_on_timing_id"
+  add_index "support_klasses", ["charactor_id"], name: "index_support_klasses_on_charactor_id"
+  add_index "support_klasses", ["klass_id"], name: "index_support_klasses_on_klass_id"
 
   create_table "targets", force: :cascade do |t|
-    t.string   "label"
     t.string   "name"
-    t.integer  "order"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
   create_table "timings", force: :cascade do |t|
-    t.string   "label"
     t.string   "name"
-    t.integer  "order"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

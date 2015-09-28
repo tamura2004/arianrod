@@ -1,5 +1,5 @@
 class Item < ActiveRecord::Base
   belongs_to :category
   belongs_to :equiped
-  belongs_to :timing
+  belongs_to :effect
 end

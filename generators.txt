@@ -1,27 +1,35 @@
 rails new arianrod -B
+
+rails g model Charactor race:references name:string age:integer sex:string player:references
+rails g model Player name:string
+
+rails g model Race name:string
+rails g model MainKlass charactor:references klass:references
+railg g model SupportKlass charactor:references klass:references
+
 rails g model LevelUp charactor:references level:integer
 rails g model BaseAbilityUp level_up:references ability:references number:integer
 rails g model SkillUp level_up:references skill:references
-rails g model Ability label:string name:string order:integer
-rails g model Skill name:string timing:references roll_type:references target:references range:references cost:integer sl_limit:integer effect:text critical:references is_magic:boolean klass:references race:references
-rails g model Timing label:string name:string order:integer
-rails g model RollType label:string name:string order:integer
-rails g model Target label:string name:string order:integer
-rails g model Range label:string name:string order:integer
-rails g model Critical label:string name:string order:integer
+rails g model Ability name:string
+rails g model Skill name:string cost:integer sl_limit:integer effect:text critical:references is_magic:boolean klass:references race:references
 
-rails g model Charactor race:references
-rails g model MainKlass charactor:references klass:references
-railg g model SupportKlass charactor:references klass:references
-rails g model Race label:string name:string order:integer
-rails g model Klass label:string name:string order:integer is_main:boolean initial_hp:integer initial_mp:integer level_up_mp:integer level_up_mp:integer
-rails g model KlssAbility klass:references ability:references number:integer
+rails g model Effect timing:references roll_type:references target:references range:references limitation:references
+
+rails g model Timing name:string
+rails g model RollType name:string
+rails g model Target name:string
+rails g model EffectRange name:string
+rails g model Critical name:string
+rails g model Limitation name:string
+
+rails g model Klass name:string is_main:boolean initial_hp:integer initial_mp:integer level_up_mp:integer level_up_mp:integer
+rails g model KlassAbility klass:references ability:references number:integer
 rails g model RaceAbility race:references ability:references number:integer
 
 rails g model SkillBonus skill:references bonus:references number:integer
-rails g model Bonus label:string name:string
+rails g model Bonus name:string
 
 rails g model CharactorItem charactor:references item:references
-rails g model Item name:string category:references level:integer weight:integer equiped:references price:integer inspect_rate is_consumued:boolean timing:references comment:text
+rails g model Item name:string category:references level:integer weight:integer equiped:references price:integer inspect_rate:integer is_consumued:boolean timing:references comment:text
 rails g model ItemRequireKlass item:references klass:references
 rails g model ItemBonus item:references bonus:references number:integer
